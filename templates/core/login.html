@@ -1,0 +1,69 @@
+{% extends 'core/base.html' %}
+{% block login %}
+<style>
+    * {
+        text-decoration: none;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    section {
+        padding: 0px 60px;
+    }
+
+    body {
+        background-color: #B8C1EC;
+    }
+
+    .login-title{
+        font-size: 24px;
+    }
+
+    .login-button{
+        width: 220px;
+    }
+
+    .reset-text{
+        font-size: 14px;
+    }
+
+    .main-card{
+        width: 25rem;
+    }
+</style>
+
+<body>
+    <div class="container-lg d-flex vh-100 align-items-center justify-content-center">
+        <div class="card text-center main-card shadow-lg">
+            <div class="card-header bg-first text-altbody login-title">
+                LOGIN
+            </div>
+            <div class="card-body">
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <div class="input-group my-3 px-5">
+                        <i class="bi bi-person input-group-text"></i>
+                        <input type="text" class="form-control" placeholder="Username" name="username">
+                    </div>
+                    <div class="input-group my-3 px-5">
+                        <i class="bi bi-key input-group-text"></i>
+                        <input type="password" class="form-control" placeholder="Password" name="password">
+                    </div>
+                    <button class="btn btn-third login-button my-3 text-first" type="submit" value="Login">
+                        Login
+                    </button>
+                </form>
+                <div class="mt-2 reset-text">
+                    <div>
+                        Don't have an account? <a href="{% url 'register' %}" class="ml-2">Sign up</a>
+                    </div>
+                    <div>
+                        <a href="">Forgot password?</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

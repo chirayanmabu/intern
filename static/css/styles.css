@@ -1,0 +1,33 @@
+* {
+    text-decoration: none;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    
+}
+
+body{
+    background-color: #F5F8FF;
+}
+
+.login-title{
+    font-size: 24px;
+}
+
+.login-button{
+    width: 220px;
+}
+
+.reset-text{
+    font-size: 14px;
+}
+
+.main-card{
+    width: 25rem;
+}
+
+.nav-text{
+    color: black;
+    padding-top: 25px;
+    font-size: 18px;
+}   
