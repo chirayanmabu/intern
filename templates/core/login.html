@@ -1,42 +1,51 @@
-{% extends 'core/base.html' %}
-{% block login %}
-<style>
-    * {
-        text-decoration: none;
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
+{% load static %}
 
-    section {
-        padding: 0px 60px;
-    }
+<!doctype html>
+<html lang="en">
 
-    body {
-        background-color: #B8C1EC;
-    }
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <title>Hello</title>
+    <style>
+        section {
+            padding: 0px 60px;
+        }
 
-    .login-title{
-        font-size: 24px;
-    }
+        body {
+            background-color: #C1E3FD;
+        }
 
-    .login-button{
-        width: 220px;
-    }
+        .login-title{
+            font-size: 24px;
+            background-color: #1F276F;
+            color: #F5F8FF;
+        }
 
-    .reset-text{
-        font-size: 14px;
-    }
+        .login-button{
+            width: 220px;
+            background-color: #1F276F;
+            color: #F5F8FF;
+        }
 
-    .main-card{
-        width: 25rem;
-    }
-</style>
+        .reset-text{
+            font-size: 14px;
+        }
+
+        .main-card{
+            width: 25rem;
+        }
+    </style>
+</head>
 
 <body>
     <div class="container-lg d-flex vh-100 align-items-center justify-content-center">
         <div class="card text-center main-card shadow-lg">
-            <div class="card-header bg-first text-altbody login-title">
+            <div class="card-header login-title">
                 LOGIN
             </div>
             <div class="card-body">
@@ -50,7 +59,7 @@
                         <i class="bi bi-key input-group-text"></i>
                         <input type="password" class="form-control" placeholder="Password" name="password">
                     </div>
-                    <button class="btn btn-third login-button my-3 text-first" type="submit" value="Login">
+                    <button class="btn login-button my-3" type="submit" value="Login">
                         Login
                     </button>
                 </form>
@@ -66,4 +75,11 @@
         </div>
     </div>
 
-{% endblock %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+</body>
+
+</html>

@@ -1,0 +1,22 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<div class="col-md-6 mt-3">
+    <div class="card">
+        <div class="card-header h5">
+            Are you sure you want to delete your post?
+        </div>
+        <form action="" method="POST">
+            {% csrf_token %}
+            <div class="card-body">
+                <p>Once deleted, it cannot be undone.</p>
+                <!-- <button class="btn btn-outline-primary" type="submit">Cancel</button> -->
+                <a href="{% url 'home' %}" class="btn btn-outline-primary">Cancel</a>
+                <button class="btn btn-outline-danger" type="submit">Delete</button>
+            </div>
+        </form>
+    </div>
+
+</div>
+
+{% endblock %}

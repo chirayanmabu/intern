@@ -1,0 +1,66 @@
+{% extends 'core/base.html' %}
+{% load crispy_forms_tags %}
+<!-- {% load static %} -->
+{% block content %}
+<div class="col-md-6 mt-3">
+    <div class="card sm-w-50 mb-3 ">
+        <div class="card-header justify-content-center">
+            <img class="post-dp me-2" src="{% static 'images/test.jpg' %}" alt="" style="width: 50px; height: 50px;">
+            <a href="" class="h5"><span>{{ post.author }}</span></a><span class="ms-2">{{ post.created_on }}</span>
+            {% if request.user == post.author %}
+            <div class="btn-group" role="group" style="margin-left: 159px;">
+                <a href="{% url 'post-edit' post.pk %}" class="btn btn-outline-secondary">Edit post</a>
+                <a href="{% url 'post-delete' post.pk %}" class="btn btn-outline-danger">Delete post</a>
+            </div>
+            {% endif %}
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col main-post">
+                    <img src="{% static 'images/test.jpg' %}" alt="">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p class="card-text">
+                        <a href="" class="h5">{{ post.author }}</a>
+                        {{ post.body }}
+                    </p>
+                    <form action="" method="POST">
+                        {% csrf_token %}
+                        <div class="input-group mb-3">
+                            <button type="button" class="btn ps-0"><i class="bi bi-hand-thumbs-up-fill"
+                                    style="padding-right: 12px;"></i>0</button>
+                            <!-- <input type="text" class="form-control" placeholder="Comment" aria-label="Comment"
+                                aria-describedby="Comment"> -->
+                            {{ form|crispy }}
+                            <button class="btn btn-outline-secondary" type="submit" id="Comment">Post</button>
+                            <!-- <a href="" type="button" class="btn btn-outline-secondary">View comments</a> -->
+                        </div>
+                    </form>
+                </div>
+            </div>
+            {% for comment in comments %}
+            <div class="row">
+                <div class="col-1 p-0 ms-3">
+                    <img class="post-dp" src="/static/images/test.jpg" alt="" style="width: 50px; height: 50px;">
+                </div>
+                <div class="col p-0 pe-2">
+                    <a href="" class="h6">{{ comment.author }}</a>
+                    {% if request.user == comment.author %}
+                    <div class="btn-group" role="group" style="margin-left: 455px;">
+                        <a href="{% url 'post-edit' post.pk %}" class="btn btn-outline-secondary"><i class="bi bi-pen-fill"></i></a>
+                        <a href="{% url 'comment-delete' post.pk comment.pk %}" class="btn btn-outline-danger"><i class="bi bi-trash-fill"></i></a>
+                    </div>
+                    {% endif %}
+                    <p>{{ comment.comment }}</p>
+                </div>
+            </div>
+            <hr>
+            {% endfor %}
+        </div>
+        
+    </div>
+</div>
+</div>
+{% endblock %}

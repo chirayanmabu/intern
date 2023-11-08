@@ -1,16 +1,65 @@
 {% extends 'core/base.html' %}
+{% load crispy_forms_tags %}
 <!-- {% load static %} -->
 {% block content %}
-<section>
-    <div class="col-10">
-        
+<div class="col-md-6 mt-3">
+  {% for post in post_list %}
+  <div class="card sm-w-50 mb-3 ">
+    <div class="card-header justify-content-center">
+      <img class="post-dp me-2" src="{% static 'images/test.jpg' %}" alt="" style="width: 50px; height: 50px;">
+      <a href="" class="h5"><span>{{ post.author }}</span></a><span class="ms-2">{{ post.created_on }}</span>
     </div>
-</section>
-{% endblock %}
-{% block sidebar %}
-<section>
-    <div class="col-1">
+    <div class="card-body">
+      <div class="row">
+        <div class="col main-post">
+          <img src="{% static 'images/test.jpg' %}" alt="">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <p class="card-text">
+            <a href="" class="h5">{{ post.author }}</a>
+            {{ post.body }}
+          </p>
+          <div class="input-group mb-3">
+            <button type="button" class="btn ps-0"><i class="bi bi-hand-thumbs-up-fill"
+                style="padding-right: 12px;"></i>0</button>
+            <input type="text" class="form-control" placeholder="Comment" aria-label="Comment"
+              aria-describedby="Comment">
+            <button class="btn btn-outline-secondary" type="button" id="Comment">Post</button>
+            <a href="{% url 'post_detail' post.pk %}" type="button" class="btn btn-outline-secondary">View comments</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
 
-    </div>
-</section>
-{% endblock %}
+<div class="col ms-auto mt-3">
+  <button type="button" class="btn create-post-btn" data-bs-toggle="modal" data-bs-target="#createPostModal"
+    style="margin-left: 220px;">
+    Create a Post
+  </button>
+  <div class="modal fade" id="createPostModal" tabindex="-1" aria-labelledby="createPostModalLabel" aria-hidden="true">
+    <form action="" method="POST">
+      {% csrf_token %}
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="createPostModalLabel">Modal title</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            {{ form|crispy }}
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Post</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock content %}
