@@ -45,6 +45,8 @@ INSTALLED_APPS = [
 
     'core.apps.CoreConfig',
 
+    'channels',
+
     'crispy_forms',
     'bootstrap5',
     'crispy_bootstrap5',

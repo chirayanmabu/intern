@@ -6,8 +6,9 @@
   {% for post in post_list %}
   <div class="card sm-w-50 mb-3 ">
     <div class="card-header justify-content-center">
-      <img class="post-dp me-2" src="{% static 'images/test.jpg' %}" alt="" style="width: 50px; height: 50px;">
-      <a href="" class="h5"><span>{{ post.author }}</span></a><span class="ms-2">{{ post.created_on }}</span>
+      <img class="post-dp me-2" src="{{ post.author.profile.profile_pic.url }}" alt="" style="width: 50px; height: 50px;">
+      <a href="{% url 'profile' post.author.profile.pk %}" class="h5"><span>{{ post.author }}</span></a><span
+        class="ms-2">{{ post.created_on }}</span>
     </div>
     <div class="card-body">
       <div class="row">
@@ -17,18 +18,29 @@
       </div>
       <div class="row">
         <div class="col">
-          <p class="card-text">
+          <p class="card-text mb-0">
             <a href="" class="h5">{{ post.author }}</a>
             {{ post.body }}
           </p>
-          <div class="input-group mb-3">
-            <button type="button" class="btn ps-0"><i class="bi bi-hand-thumbs-up-fill"
-                style="padding-right: 12px;"></i>0</button>
-            <input type="text" class="form-control" placeholder="Comment" aria-label="Comment"
-              aria-describedby="Comment">
-            <button class="btn btn-outline-secondary" type="button" id="Comment">Post</button>
-            <a href="{% url 'post_detail' post.pk %}" type="button" class="btn btn-outline-secondary">View comments</a>
-          </div>
+
+          <button id="like-button" type="button" class="btn ps-0 pe-0 my-2" value="{{ post.pk }}">
+            <i class="bi bi-hand-thumbs-up-fill"></i>
+            <span id="like-count" class="ps-1">{{ post.like_count }}</span>
+          </button>
+          
+          <form method="POST" action="">
+            {% csrf_token %}
+            <div class="input-group mb-3">
+              <input type="text" class="form-control" placeholder="Comment" aria-label="Comment"
+                aria-describedby="Comment">
+              <!-- <button class="btn btn-outline-secondary" type="button" id="Comment">Post</button> -->
+              
+              <a href="{% url 'post_detail' post.pk %}" type="button" class="btn btn-outline-secondary">Post</a>
+              <a href="{% url 'post_detail' post.pk %}" type="button" class="btn btn-outline-secondary">View
+                comments</a>
+            </div>
+          </form>
+
         </div>
       </div>
     </div>
@@ -61,5 +73,7 @@
       </div>
     </form>
   </div>
-</div>
+</div>  
+
+
 {% endblock content %}

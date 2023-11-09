@@ -6,147 +6,51 @@
 {% block content %}
 <div class="col p-3">
     <div class="card mb-3">
-        <img src="/static/images/banner_default.png" class="card-img-top banner" alt="">
+        <img src="{{ profile.banner_pic.url }}" class="card-img-top banner" alt="">
         <div class="container-xxl mt-3 mb-3">
             <div class="row g-0 align-items-center">
                 <div class="col-md-2">
-                    <img src="{{ normal_user.profile_pic.url }}" class="profile_picture" alt="">
+                    <img src="{{ profile.profile_pic.url }}" class="profile_picture" alt="">
                 </div>
                 <div class="col-md-8">
                     <div class="card-body">
-                        <h5 class="card-title">{{ normal_user.username }}</h5>
-                        <p class="card-text">{{ normal_user.bio }}</p>
+                        <h5 class="card-title">{{ profile.username }}</h5>
+                        <p class="card-text">Friends: {{ no_of_friends }}</p>
+                        {% if profile.bio %}
+                        <p class="card-text">{{ profile.bio }}</p>
+                        {% endif %}
                         <!-- <p class="card-text text-body-secondary"><i class="bi bi-geo-alt-fill"></i>Location</p> -->
-                        <span class="card-text text-body-secondary"><i class="bi bi-geo-alt-fill"></i>{{ normal_user.address }}</span>
-                        <span class="card-text text-body-secondary"><i class="bi bi-balloon-fill"></i>Born Nov 15,
-                            2003</span>
+                        {% if profile.address %}
+                        <span class="card-text text-body-secondary"><i class="bi bi-geo-alt-fill"></i>{{ profile.address }}</span>
+                        {% endif %}
 
+                        {% if profile.dob %}
+                        <span class="card-text text-body-secondary"><i class="bi bi-balloon-fill"></i>{{ profile.dob }}</span>
+                        {% endif %}
+
+                        
                         <!-- <span class="card-text text-body-secondary"><i class="bi bi-geo-alt-fill"></i>Location</span> -->
                     </div>
                 </div>
                 <div class="col-md-2">
-                    <button type="button" class="btn edit-profile-btn" data-bs-toggle="modal"
-                        data-bs-target="#profileModal">
-                        Edit profile
-                    </button>
+                    {% if request.user == user %}
+                        <a href="{% url 'profile-edit' profile.pk %}" type="button" class="btn edit-profile-btn">Edit Profile</a>
+                    {% endif %} 
 
-                    <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel"
-                        aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="profileModalLabel">Edit Profile</h1>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                                </div>
-                                <form action="" method="POST" enctype="multipart/form-data">
-                                    {% csrf_token %}
-                                    <div class="modal-body">
-                                        <div class="row my-3 align-items-center">
-                                            <div class="col-3">
-                                                <img class="update-profile-picture" src="{{ normal_user.profile_pic.url }}"
-                                                    alt="">
-                                            </div>
-                                            <div class="col">
-                                                <div class="input-group mb-3">
-                                                    {{ form.profile_pic|as_crispy_field }}
-                                                    <!-- <input type="file" class="form-control" id="updateProfilePicture"> -->
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row my-3">
-                                            <div class="col-3">
-                                                <img class="update-banner"
-                                                    src="{% static 'images/banner_default.png' %}" alt=""
-                                                    style="border-radius: 0;">
-                                            </div>
-                                            <div class="col">
-                                                <div class="input-group mb-3">
-                                                    <!-- <input type="file" class="form-control" id="updateBanner"> -->
-                                                    {{ form.banner_pic|as_crispy_field }}
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="row mb-3">
-                                            <div class="col-3">
-                                                <label for="firstName" class="col-form-label">First name</label>
-                                            </div>
-                                            <div class="col">
-                                                <!-- <input type="text" id="firstName" class="form-control"
-                                                    aria-describedby="firstName"> -->
-                                                {{ form.first_name|as_crispy_field }}
-                                            </div>
-                                        </div>
-                                        <div class="row mb-3">
-                                            <div class="col-3">
-                                                <label for="lastName" class="col-form-label">Last name</label>
-                                            </div>
-                                            <div class="col">
-                                                <!-- <input type="text" id="lastName" class="form-control"
-                                                    aria-describedby="lastName"> -->
-                                                {{ form.last_name|as_crispy_field }}
-                                            </div>
-                                        </div>
-                                        <div class="row mb-3">
-                                            <div class="col-3">
-                                                <label for="bio" class="col-form-label">Bio</label>
-                                            </div>
-                                            <div class="col">
-                                                <!-- <textarea class="form-control" id="bio" rows="3"></textarea> -->
-                                                {{ form.bio|as_crispy_field }}
-                                            </div>                                            
-                                        </div>
-                                        <div class="row mb-3">
-                                            <div class="col-3">
-                                                <label for="phone" class="col-form-label">Phone</label>
-                                            </div>
-                                            <div class="col">
-                                                <!-- <input type="text" id="phone" class="form-control"
-                                                    aria-describedby="phone"> -->
-                                                {{ form.phone|as_crispy_field }}
-                                            </div>
-                                        </div>
-                                        <div class="row mb-3">
-                                            <div class="col-3">
-                                                <label for="address" class="col-form-label">Address</label>
-                                            </div>
-                                            <div class="col">
-                                                <!-- <input type="text" id="address" class="form-control"
-                                                    aria-describedby="address"> -->
-                                                {{ form.address|as_crispy_field }}
-                                            </div>
-                                        </div>
-                                        <div class="row mb-3">
-                                            <div class="col-3">
-                                                <label for="address" class="col-form-label">Address</label>
-                                            </div>
-                                            <div class="col">
-                                                <!-- <input type="text" id="address" class="form-control"
-                                                    aria-describedby="address"> -->
-                                                {{ form.dob|as_crispy_field }}
-                                            </div>
-                                        </div>
-                                        <div class="row mb-3">
-                                            <div class="col-3">
-                                                <label for="gender" class="col-form-label">Gender</label>
-                                            </div>
-                                            <div class="col">
-                                                <!-- <input type="text" id="gender" class="form-control"
-                                                    aria-describedby="gender"> -->
-                                                {{ form.gender|as_crispy_field }}
-                                            </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary"
-                                                data-bs-dismiss="modal">Close</button>
-                                            <button type="submit" class="btn btn-primary">Save changes</button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
+                    {% if user == request.user %}
+                    {% else %}
+                        {% if is_friend %}
+                        <form method="POST" action="{% url 'remove-friend' profile.pk %}">
+                            {% csrf_token %}
+                            <button class="btn unfriend-btn" type="submit">Unfriend</button>
+                        </form>
+                        {% else %}
+                        <form method="POST" action="{% url 'add-friend' profile.pk %}">
+                            {% csrf_token %}
+                            <button class="btn edit-profile-btn" type="submit">Add friend</button>
+                        </form>
+                        {% endif %}
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -163,105 +67,18 @@
             </div>
         </div>
 
-
+        
         <div class="row">
+            {% for post in posts %}
             <div class="col-4">
                 <div class="post-thumbnail">
-                    <button type="button" class="btn post-thumbnail-btn" data-bs-toggle="modal"
-                        data-bs-target="#postModal">
+                    <a href="{% url 'post_detail' post.pk %}" type="button" class="btn post-thumbnail-btn">
                         <img src="/static/images/test.jpg" alt="">
-                    </button>
-
-                    <div class="modal fade" id="postModal" tabindex="-1" aria-labelledby="postModalLabel"
-                        aria-hidden="true">
-                        <div class="modal-dialog modal-xl">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <img class="post-dp me-2" src="/static/images/test.jpg" alt=""
-                                        style="width: 50px; height: 50px;">
-                                    <h1 class="modal-title fs-5" id="postModalLabel">Username</h1>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <img src="/static/images/test.jpg" alt="">
-                                        </div>
-                                        <div class="col-md-6">
-                                            <!-- Post Caption -->
-                                            <div class="row">
-                                                <div class="col-1 p-0 me-3">
-                                                    <img class="post-dp" src="/static/images/test.jpg" alt=""
-                                                        style="width: 50px; height: 50px;">
-                                                </div>
-                                                <div class="col p-0 pe-2">
-                                                    <p>Username</p>
-                                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                                                        Dignissimos
-                                                        officiis quo maxime, perspiciatis eum dolorum consequatur beatae
-                                                        natus, aut quam eaque tempore mollitia laborum dicta similique
-                                                        atque
-                                                        ex! Nobis, dicta. Lorem ipsum dolor sit amet, consectetur
-                                                        adipisicing elit. Voluptas non accusamus temporibus deserunt
-                                                        aliquam
-                                                        magnam suscipit debitis dicta omnis cum incidunt soluta
-                                                        provident
-                                                        ipsam asperiores quo, recusandae consequatur vitae nostrum!</p>
-                                                </div>
-                                            </div>
-                                            <hr>
-                                            <!-- Post Comments -->
-                                            <div class="row">
-                                                <div class="col-1 p-0 me-3">
-                                                    <img class="post-dp" src="/static/images/test.jpg" alt=""
-                                                        style="width: 50px; height: 50px;">
-                                                </div>
-                                                <div class="col p-0 pe-2">
-                                                    <p>Username</p>
-                                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                                                        Dignissimos
-                                                        officiis quo maxime, perspiciatis eum dolorum consequatur beatae
-                                                        natus, aut quam eaque tempore mollitia laborum dicta similique
-                                                        atque
-                                                        ex! Nobis, dicta. Lorem ipsum dolor sit amet, consectetur
-                                                        adipisicing elit. Voluptas non accusamus temporibus deserunt
-                                                        aliquam
-                                                        magnam suscipit debitis dicta omnis cum incidunt soluta
-                                                        provident
-                                                        ipsam asperiores quo, recusandae consequatur vitae nostrum!</p>
-                                                </div>
-                                            </div>
-                                            <hr>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <div class="input-group mb-3">
-                                        <button type="button" class="btn"><i class="bi bi-hand-thumbs-up-fill"
-                                                style="padding-right: 12px;"></i>0</button>
-                                        <input type="text" class="form-control" placeholder="Comment"
-                                            aria-label="Comment" aria-describedby="Comment">
-                                        <button class="btn btn-outline-secondary" type="button"
-                                            id="Comment">Post</button>
-                                    </div>
-                                    <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    </a>
+                    
                 </div>
             </div>
-            <div class="col-4">
-                <div class="post-thumbnail">
-                    <img src="/static/images/test.jpg" alt="">
-                </div>
-            </div>
-            <div class="col-4">
-                <div class="post-thumbnail">
-                    <img src="/static/images/test.jpg" alt="">
-                </div>
-            </div>
+            {% endfor %}
         </div>
     </div>
 

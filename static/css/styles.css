@@ -3,34 +3,94 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    
+
 }
 
-body{
+body {
     background-color: #F5F8FF;
 }
 
-.login-title{
+/* base.html */
+.nav-color {
+    background-color: #1f276f;
+    color: #f5f8ff;
+}
+
+.nav-input {
+    border-radius: 50px;
+}
+
+.profile-button {
+    border-radius: 50px;
+    background-image: url("/static/images/default_picture.png") no-repeat;
+}
+
+.profile-button-image {
+    width: 40px;
+    height: 20px;
+}
+
+.nav a {
+    /* padding: 10px; */
+    text-decoration: none;
+    color: #f5f8ff;
+    border-radius: 30px;
+}
+
+.nav a:hover {
+    /* border-radius: 30px; */
+    text-decoration: none;
+    color: #f5f8ff;
+    background-color: #5549FD;
+}
+
+.sidebar {
+    background-color: #1f276f;
+    /* position: fixed; */
+}
+
+.hamburger-nav {
+    text-decoration: none;
+    color: #f5f8ff;
+    border-radius: 30px;
+}
+
+.hamburger-nav a {
+    color: #f5f8ff;
+    border-radius: 30px;
+}
+
+.hamburger-nav a:hover {
+    text-decoration: none;
+    color: #f5f8ff;
+    background-color: #5549FD;
+}
+
+
+
+
+
+.login-title {
     font-size: 24px;
 }
 
-.login-button{
+.login-button {
     width: 220px;
 }
 
-.reset-text{
+.reset-text {
     font-size: 14px;
 }
 
-.main-card{
+.main-card {
     width: 25rem;
 }
 
-.nav-text{
+.nav-text {
     color: black;
     padding-top: 25px;
     font-size: 18px;
-}   
+}
 
 
 
@@ -63,7 +123,8 @@ body{
     border-radius: 50%;
 }
 
-.update-profile-picture, .update-banner img {
+.update-profile-picture,
+.update-banner img {
     width: 100%;
     height: auto;
 }
@@ -81,7 +142,7 @@ body{
     height: 100%;
 }
 
-.edit-profile-btn{
+.edit-profile-btn {
     border-radius: 30px;
     background-color: #887ffe;
     color: white;
@@ -89,7 +150,7 @@ body{
     height: 45px;
 }
 
-.edit-profile-btn:hover{
+.edit-profile-btn:hover {
     color: white;
     background-color: #5549FD;
 }
@@ -106,7 +167,7 @@ body{
     height: 100%;
 }
 
-.post-thumbnail-btn{
+.post-thumbnail-btn {
     width: 100%;
     height: 100%;
     padding: 0px;
@@ -118,28 +179,40 @@ body{
     border-radius: 50%;
 }
 
-.comment-border{
+.comment-border {
     border-bottom: 1px solid black;
+}
+
+.unfriend-btn {
+    border-radius: 30px;
+    background-color: #de2c2c;
+    color: white;
+    width: 100%;
+    height: 45px;
+}
+
+.unfriend-btn:hover {
+    color: white;
+    background-color: #b01c1c;
 }
 
 
 
 
-
 /* home page */
-.main-post{
+.main-post {
     width: auto;
     height: 450px;
     overflow: hidden;
     margin-bottom: 16px;
 }
 
-.main-post img{
+.main-post img {
     width: 100%;
     height: 100%;
 }
 
-.create-post-btn{
+.create-post-btn {
     border-radius: 30px;
     background-color: #887ffe;
     color: white;
@@ -150,4 +223,33 @@ body{
 .create-post-btn:hover {
     color: white;
     background-color: #5549FD;
+}
+
+
+
+/* Friends */
+.accept-btn {
+    border-radius: 30px;
+    background-color: #887ffe;
+    color: white;
+    width: 100%;
+    height: 45px;
+}
+
+.accept-btn:hover {
+    color: white;
+    background-color: #5549FD;
+}
+
+.decline-btn {
+    border-radius: 30px;
+    background-color: #d53737;
+    color: white;
+    width: 100%;
+    height: 45px;
+}
+
+.decline-btn:hover {
+    color: white;
+    background-color: #b51717;
 }

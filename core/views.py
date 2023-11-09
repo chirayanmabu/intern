@@ -1,12 +1,15 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from django.views.generic.edit import UpdateView, DeleteView
 from django.urls import reverse_lazy
+from django.http import HttpResponseRedirect, JsonResponse
+from django.db.models import Q
 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 from .decorators import unauthenticated_user
+from django.dispatch import receiver
 
 from .forms import *
 from .models import *
@@ -49,32 +52,10 @@ def logoutUser(request):
     logout(request)
     return redirect('login')
 
-def profilePage(request):
-    normal_user = request.user.userinfo
-    print(normal_user)
-
-    form = ProfileForm(instance=normal_user)
-    if request.method == "POST":
-        form = ProfileForm(request.POST, request.FILES, instance=normal_user)
-        if form.is_valid():
-            form.save()
-            print('nice')
-        else:
-            print('haha')
-    
-    context = {
-        'form': form,
-
-        'normal_user': normal_user
-    }
-
-    return render(request, 'core/profile.html', context)
-
-
 
 def send_request(request, id):
     from_user = request.user
-    to_user = UserInfo.objects.get(id=id)
+    to_user = UserProfile.objects.get(id=id)
     friend_req = FriendRequest.objects.get_or_create(from_user=from_user, to_user=to_user)
     return redirect('home')
 
@@ -96,7 +77,10 @@ def accept_request(request, id):
 
 class PostListView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
-        posts = Post.objects.all().order_by('-created_on')
+        logged_in_user = request.user
+        posts = Post.objects.filter(
+            author__profile__friends__in=[logged_in_user.id]
+            ).order_by('-created_on')
         form = PostForm()
 
         context = {
@@ -123,6 +107,7 @@ class PostListView(LoginRequiredMixin, View):
         }
 
         return render(request, 'core/home.html', context)
+
     
 
 class PostDetailView(LoginRequiredMixin, View):
@@ -200,14 +185,139 @@ class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
 class ProfilePageView(View):
     def get(self, request, pk, *args, **kwargs):
-        profile = UserInfo.objects.get(pk=pk)
+        profile = UserProfile.objects.get(pk=pk)
         user = profile.user
         posts = Post.objects.filter(author=user).order_by('-created_on')
+        # form = ProfileForm(instance=profile)
+
+        friends = profile.friends.all()
+        no_of_friends = len(friends)
+
+        if (no_of_friends) == 0:
+            is_friend = False
+
+        for friend in friends:
+            if friend == request.user:
+                is_friend = True
+                break
+            else:
+                is_friend = False
 
         context = {
             'user': user,
             'profile': profile,
-            'posts': posts
+            'posts': posts,
+            # 'form': form,
+            'no_of_friends': no_of_friends,
+            'is_friend': is_friend,
         }
 
         return render(request, 'core/profile.html', context)
+
+
+class ProfileEditView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = UserProfile
+    fields = ['first_name', 'last_name', 'bio', 'phone', 'profile_pic', 'banner_pic', 'address', 'dob', 'gender']
+
+    template_name = 'core/profile-edit.html'
+
+    def get_success_url(self):
+        pk = self.kwargs['pk']
+        return reverse_lazy('profile', kwargs={'pk': pk})
+    
+    def test_func(self):
+        profile = self.get_object()
+        return self.request.user == profile.user
+    
+
+class AddFriendView(LoginRequiredMixin, View):
+    def post(self, request, pk, *args, **kwargs):
+        profile = UserProfile.objects.get(pk=pk)
+        profile.friends.add(request.user)
+
+        return redirect('profile', pk=profile.pk)
+
+class RemoveFriendView(LoginRequiredMixin, View):
+    def post(self, request, pk, *args, **kwargs):
+        profile = UserProfile.objects.get(pk=pk)
+        profile.friends.remove(request.user)
+
+        return redirect('profile', pk=profile.pk)
+    
+
+class Addlike(LoginRequiredMixin, View):
+     def post(self, request, pk, *args, **kwargs):
+        post_obj = Post.objects.get(pk=pk)
+        if request.POST.get('action') == "post":
+            print("hello")
+            result = ''
+            id = int(request.POST.get('postid'))
+            post = Post.objects.get(pk=pk)
+
+            if post.likes.filter(id=request.user.id).exists():
+                post.likes.remove(request.user)
+                post.like_count -= 1
+                post.save()
+            else:
+                post.likes.add(request.user)
+                post.like_count += 1
+                post.save()
+
+        
+            return JsonResponse({'result': result})
+        
+
+def like(request):
+    if request.POST.get('action') == "post":
+        print("hello")
+        result = ''
+        id = int(request.POST.get('postid'))
+        post = get_object_or_404(Post, id=id)
+
+        if post.likes.filter(id=request.user.id).exists():
+            post.likes.remove(request.user)
+            post.like_count -= 1
+            result = post.like_count
+            post.save()
+        else:
+            post.likes.add(request.user)
+            post.like_count += 1
+            result = post.like_count
+            post.save()
+        print("result: ", result)
+    
+
+    
+        return JsonResponse({'result': result})
+
+
+class UserSearch(View):
+    def get(self, request, *args, **kwargs):
+        query = self.request.GET.get('query')
+        profile_list = UserProfile.objects.filter(
+            Q(user__username__icontains = query)
+        )
+
+        context = {
+            'profile_list': profile_list,
+        }
+
+        return render(request, 'core/search.html', context)
+
+
+class FriendsListView(View):
+    def get(self, request, pk, *args, **kwargs):
+        profile = UserProfile.objects.get(pk=pk)
+        friends = profile.friends.all()
+
+        context = {
+            'profile': profile,
+            'friends': friends
+        }
+
+        return render(request, 'core/friends-list.html', context)
+
+
+class FriendRequestView(View):
+    def get(self, request, *args, **kwargs):
+        return render(request, 'core/friend-req.html')

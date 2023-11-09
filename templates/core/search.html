@@ -1,0 +1,32 @@
+{% extends 'core/base.html' %}
+
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="col mt-3">
+    <div class="card">
+        <div class="card-header h5">
+          Search results
+        </div>
+        <div class="card-body">
+            <div class="row">
+                {% for profile in profile_list %}
+                <div class="col-3">
+                    <a href="{% url 'profile' profile.pk %}" style="text-decoration: none;">
+                        <div class="card" style="width: 18rem;">
+                            <img src="{% static 'images/test.jpg' %}" class="card-img-top" alt="..." style="height: 230px;">
+                            <div class="card-body">
+                            <p class="card-text h5">{{ profile.username }}</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>           
+                {% endfor %}                    
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+{% endblock %}

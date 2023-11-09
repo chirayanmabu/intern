@@ -30,18 +30,6 @@ class CreateUserForm(UserCreationForm):
 
 
 class ProfileForm(ModelForm):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['profile_pic'].label = False
-        self.fields['banner_pic'].label = False
-        self.fields['first_name'].label = False
-        self.fields['last_name'].label = False
-        self.fields['bio'].label = False
-        self.fields['phone'].label = False
-        self.fields['address'].label = False
-        self.fields['gender'].label = False
-        self.fields['dob'].label = False
-
     GENDER_CHOICES = [
         ('male', 'Male'),
         ('female', 'Female'),
@@ -49,42 +37,51 @@ class ProfileForm(ModelForm):
     ]
 
     profile_pic = forms.ImageField(
+        label='',
         required=False,
         widget=forms.TextInput(attrs={'class': 'form-control', 'type': 'file'})
     )
     banner_pic = forms.ImageField(
+        label='',
         required=False,
         widget=forms.TextInput(attrs={'class': 'form-control', 'type': 'file'})
     )
     first_name = forms.CharField(
+        label='',
         min_length=2, max_length=30,
         widget=forms.TextInput(attrs={'placeholder': 'First name', 'class': 'form-control'})
     )
     last_name = forms.CharField(
+        label='',
         min_length=2, max_length=30,
         widget=forms.TextInput(attrs={'placeholder': 'Last name', 'class': 'form-control'})
     )
     bio = forms.CharField(
+        label='',
         widget=forms.Textarea(attrs={'placeholder': 'Bio', 'class': 'form-control', 'rows': '3'})
     )
     phone = forms.CharField(
+        label='',
         widget=forms.TextInput(attrs={'type': 'number'})
     )
     address = forms.CharField(
+        label='',
         min_length=2, max_length=50,
         widget=forms.TextInput(attrs={'placeholder': 'Address'})
     )
     dob = forms.DateField(
+        label='',
         required=False,
         widget=forms.TextInput(attrs={'type': 'date'})
     )
     gender = forms.ChoiceField(
+        label='',
         choices=GENDER_CHOICES,
         widget=forms.Select(attrs={'class': 'form-select'})
     )
 
     class Meta:
-        model = UserInfo
+        model = UserProfile
         fields = '__all__'
         # exclude = ['user']
 
@@ -112,7 +109,8 @@ class CommentForm(ModelForm):
             'placeholder': 'Comment',
             'class': 'form-control mb-0',
             'aria-label': 'Comment',
-            'aria-describedby': 'Comment'
+            'aria-describedby': 'Comment',
+            'name': 'comment'
             })
     )
 

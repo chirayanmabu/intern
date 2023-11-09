@@ -4,6 +4,37 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-
+<div class="col mt-3">
+    <div class="card">
+        <div class="card-header h5">
+          Friends
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-3">
+                    <div class="card" style="width: 18rem;">
+                        <a href=""><img src="{% static 'images/test-hari.jpg' %}" class="card-img-top" alt="..." style="height: 230px;"></a>
+                        <div class="card-body">
+                        <a href="" style="text-decoration: none;"><p class="card-text h5 mb-3">Username</p></a>
+                        <button class="btn accept-btn mb-2">Accept</button>
+                        <button class="btn decline-btn">Decline</button>
+                        </div>
+                    </div>
+                </div>                
+                <div class="col-3">
+                    <div class="card" style="width: 18rem;">
+                        <a href=""><img src="{% static 'images/test.jpg' %}" class="card-img-top" alt="..." style="height: 230px;"></a>
+                        <div class="card-body">
+                        <a href="" style="text-decoration: none;"><p class="card-text h5 mb-3">Username</p></a>
+                        <button class="btn accept-btn mb-2">Accept</button>
+                        <button class="btn decline-btn">Decline</button>
+                        </div>
+                    </div>
+                </div>                
+            </div>
+            
+        </div>
+    </div>
+</div>
 
 {% endblock %}

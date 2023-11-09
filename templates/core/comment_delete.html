@@ -11,7 +11,7 @@
             <div class="card-body">
                 <p>Once deleted, it cannot be undone.</p>
                 <!-- <button class="btn btn-outline-primary" type="submit">Cancel</button> -->
-                <a href="{% url 'home' %}" class="btn btn-outline-primary">Cancel</a>
+                <a href="{% url 'post_detail' object.post.pk %}" class="btn btn-outline-primary">Cancel</a>
                 <button class="btn btn-outline-danger" type="submit">Delete</button>
             </div>
         </form>
