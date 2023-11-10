@@ -2,18 +2,27 @@ from rest_framework import serializers
 from rest_framework.validators import ValidationError
 from .models import User
 
-class RegisterSerializer(serializers.ModelSerializer):
-    email = serializers.CharField(max_length=80)
-    username = serializers.CharField(max_length=45)
-    password = serializers.CharField(write_only=True)
-
+class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['email', 'username', 'password']
+        fields = ['id', 'email', 'username', 'password']
+        extra_kwargs={
+            'password': {
+                "write_only": True
+            }
+        }
 
-    def valdate(self, attrs):
-        email_exists = User.objects.filter(email=attrs['email']).exists
+    def create(self, validated_data):
+        password = validated_data.pop('password', None)
+        instance = self.Meta.model(**validated_data)
+        if password is not None:
+            instance.set_password(password)
+        instance.save()
+        return instance
 
-        if email_exists:
-            raise ValidationError("Email already used.")
-        return 
+    # def valdate(self, attrs):
+    #     email_exists = User.objects.filter(email=attrs['email']).exists
+
+    #     if email_exists:
+    #         raise ValidationError("Email already used.")
+    #     return 

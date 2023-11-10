@@ -39,31 +39,31 @@
             </form>
           </li>
           <li class="nav-item d-md-none hamburger-nav">
-            <a href="#" class="nav-link" style="padding-left: 16px;">
+            <a href="{% url 'home'%}" class="nav-link" style="padding-left: 16px;">
               <i class="bi bi-house-fill"></i>
               <span style="padding-left: 16px;">Home</span>
             </a>
           </li>
           <li class="nav-item d-md-none hamburger-nav">
-            <a href="#" class="nav-link" style="padding-left: 16px;">
+            <a href="{% url 'friends-list' user.profile.pk %}" class="nav-link" style="padding-left: 16px;">
               <i class="bi bi-people-fill"></i>
               <span style="padding-left: 16px;">Friends</span>
             </a>
           </li>
           <li class="nav-item d-md-none hamburger-nav">
-            <a href="#" class="nav-link" style="padding-left: 16px;">
-              <i class="bi bi-bell-fill"></i>
-              <span style="padding-left: 16px;">Notifications</span>
+            <a href="" class="nav-link" style="padding-left: 16px;" data-bs-toggle="modal" data-bs-target="#createPostModal">
+              <i class="bi bi-upload"></i>
+              <span style="padding-left: 16px;">Create a Post</span>
             </a>
           </li>
           <li class="nav-item d-md-none hamburger-nav">
-            <a href="#" class="nav-link" style="padding-left: 16px;">
+            <a href="" class="nav-link" style="padding-left: 16px;">
               <i class="bi bi-person-fill"></i>
               <span style="padding-left: 16px;">Profile</span>
             </a>
           </li>
           <li class="nav-item d-md-none hamburger-nav">
-            <a href="#" class="nav-link" style="padding-left: 16px;">
+            <a href="{% url 'logout'%}" class="nav-link" style="padding-left: 16px;">
               <i class="bi bi-box-arrow-right"></i>
               <span style="padding-left: 16px;">Log out</span>
             </a>

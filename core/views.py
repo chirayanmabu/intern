@@ -12,12 +12,16 @@ from .decorators import unauthenticated_user
 from django.dispatch import receiver
 
 from rest_framework import generics, status
+from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.request import Request
+from rest_framework.exceptions import AuthenticationFailed
 
 from .forms import *
 from .models import *
 from .serializers import *
+
+import jwt, datetime
 
 
 def registerPage(request):
@@ -74,11 +78,77 @@ def accept_request(request, id):
     return redirect('home')
 
 
+class RegisterAPIView(APIView):
+    def post(self, request):
+        serializer = UserSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+    
+class LoginAPIView(APIView):
+    def post(self, request):
+        email = request.data['email']
+        password = request.data['password']
+
+        user = User.objects.filter(email=email).first()
+
+        if user is None:
+            raise AuthenticationFailed("User not found.")
+        
+        if not user.check_password(password):
+            raise AuthenticationFailed("Incorrect password")
+        
+        payload = {
+            "id": user.id,
+            "exp": datetime.datetime.utcnow() + datetime.timedelta(minutes=60),
+            "iat": datetime.datetime.utcnow()
+        }
+
+        token = jwt.encode(payload, 'secret', algorithm='HS256').decode('utf-8')
+        
+        response = Response()
+
+        response.set_cookie(key="kwt", value=token, httponly=True)
+        response.data = {
+            "jwt": token
+        }
+
+        return response
+
+
+class UserViewAPI(APIView):
+    def get(self, request):
+        token = request.COOKIES.get('jwt')
+
+        if not token:
+            raise AuthenticationFailed("Unauthenticated")
+        
+        try:
+            payload = jwt.decode(token, 'secret', algorithm=['HS256'])
+        except jwt.ExpiredSignatureError:
+            raise AuthenticationFailed("Unauthenticated")
+        
+        user = User.objects.filter(id=payload['id']).first()
+
+        serializer = UserSerializer(user)
+
+        return Response(serializer.data)
+    
+
+class LogoutViewAPI(APIView):
+    def post(self, request):
+        response = Response()
+        response.delete_cookie('jwt')
+        response.data = {
+            'message': 'success'
+        }
+        return response
 
 
 class PostListView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         logged_in_user = request.user
+        profile_list = UserProfile.objects.all()
         posts = Post.objects.filter(
             author__profile__friends__in=[logged_in_user.id]
             ).order_by('-created_on')
@@ -87,14 +157,18 @@ class PostListView(LoginRequiredMixin, View):
         context = {
             'post_list': posts,
             'form': form,
+            'profile_list': profile_list
         }
 
         return render(request, 'core/home.html', context)
     
 
     def post(self, request, *args, **kwargs):
-        posts = Post.objects.all().order_by('-created_on')
-        form = PostForm(request.POST)
+        logged_in_user = request.user
+        posts = Post.objects.filter(
+            author__profile__friends__in=[logged_in_user.id]
+            ).order_by('-created_on')
+        form = PostForm(request.POST, request.FILES)
 
         if form.is_valid():
             new_post = form.save(commit=False)
@@ -189,6 +263,7 @@ class ProfilePageView(View):
         profile = UserProfile.objects.get(pk=pk)
         user = profile.user
         posts = Post.objects.filter(author=user).order_by('-created_on')
+
         # form = ProfileForm(instance=profile)
 
         friends = profile.friends.all()
@@ -211,6 +286,7 @@ class ProfilePageView(View):
             # 'form': form,
             'no_of_friends': no_of_friends,
             'is_friend': is_friend,
+            
         }
 
         return render(request, 'core/profile.html', context)

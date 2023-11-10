@@ -73,7 +73,7 @@
             <div class="col-4">
                 <div class="post-thumbnail">
                     <a href="{% url 'post_detail' post.pk %}" type="button" class="btn post-thumbnail-btn">
-                        <img src="/static/images/test.jpg" alt="">
+                        <img src="{{ post.post_pic.url }}" alt="">
                     </a>
                     
                 </div>

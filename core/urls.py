@@ -8,6 +8,11 @@ urlpatterns = [
 
     path('', views.PostListView.as_view(), name="home"),
 
+    path('restregister/', views.RegisterAPIView.as_view(), name="restregister"),
+    path('restlogin/', views.LoginAPIView.as_view(), name="restlogin"),
+    path('restuser/', views.UserViewAPI.as_view(), name="restuser"),
+    path('restlogout/', views.LogoutViewAPI.as_view(), name="restlogout"),
+
     # function based
     # path('profile/', views.profilePage, name="profile"),
 

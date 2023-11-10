@@ -2,6 +2,35 @@
 {% load crispy_forms_tags %}
 <!-- {% load static %} -->
 {% block content %}
+{% if user.friends.count == 0 %}
+<div class="col-md-6 mt-3">
+  <div class="card">
+      <div class="card-header h5">
+        Add people you may know
+      </div>
+      <div class="card-body">
+          <div class="row">
+              {% for profile_page in profile_list %}
+                {% if profile_page.user.username != user.username %}
+                <div class="col-6 mb-3">
+                    <div class="card" style="width: 18rem;">
+                        <a href="{% url 'profile' profile_page.user.profile.pk %}"><img src="{{ profile_page.user.profile.profile_pic.url }}" class="card-img-top" alt="..." style="height: 230px;"></a>
+                        <div class="card-body">
+                            <a href="{% url 'profile' profile_page.user.profile.pk %}" style="text-decoration: none;"><p class="card-text h5 mb-3">{{ profile_page.user.username }}</p></a>
+                            <a href="{% url 'profile' profile_page.user.profile.pk %}" class="btn accept-btn mb-2">View Profile</a>
+                        </div>
+                    </div>
+                    </a>
+                </div>
+                {% endif %}
+              {% endfor %}                              
+          </div>
+
+      </div>
+  </div>
+</div>
+
+{% else %}
 <div class="col-md-6 mt-3">
   {% for post in post_list %}
   <div class="card sm-w-50 mb-3 ">
@@ -13,7 +42,7 @@
     <div class="card-body">
       <div class="row">
         <div class="col main-post">
-          <img src="{% static 'images/test.jpg' %}" alt="">
+          <img src="{{ post.post_pic.url }}" alt="">
         </div>
       </div>
       <div class="row">
@@ -47,19 +76,20 @@
   </div>
   {% endfor %}
 </div>
+{% endif %}
 
-<div class="col ms-auto mt-3">
+<div class="col ms-auto mt-3 d-none d-md-inline">
   <button type="button" class="btn create-post-btn" data-bs-toggle="modal" data-bs-target="#createPostModal"
     style="margin-left: 220px;">
     Create a Post
   </button>
   <div class="modal fade" id="createPostModal" tabindex="-1" aria-labelledby="createPostModalLabel" aria-hidden="true">
-    <form action="" method="POST">
+    <form action="" method="POST" enctype="multipart/form-data">
       {% csrf_token %}
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h1 class="modal-title fs-5" id="createPostModalLabel">Modal title</h1>
+            <h1 class="modal-title fs-5" id="createPostModalLabel">Create a Post</h1>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
