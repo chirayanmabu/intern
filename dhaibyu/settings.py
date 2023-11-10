@@ -32,6 +32,10 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
+    
+    'channels',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -44,8 +48,6 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
 
     'core.apps.CoreConfig',
-
-    'channels',
 
     'crispy_forms',
     'bootstrap5',
@@ -98,6 +100,8 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 WSGI_APPLICATION = 'dhaibyu.wsgi.application'
+
+ASGI_APPLICATION = 'dhaibyu.asgi.application'
 
 
 # Database
@@ -161,3 +165,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_URL = '/images/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
+    }
+}

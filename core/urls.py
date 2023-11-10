@@ -32,4 +32,8 @@ urlpatterns = [
     path('profile/<int:pk>/remove-friend', views.RemoveFriendView.as_view(), name="remove-friend"),
     # path('add-friend/<int:id>/', views.send_request, name="add-friend"),
     path('accept/<int:id>/', views.accept_request, name="accept"),
+
+    path('chat/<str:room_name>', views.ChatRoom, name="chat-room"),
+
+
 ]

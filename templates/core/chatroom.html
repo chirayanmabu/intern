@@ -1,0 +1,36 @@
+{% extends 'core/base.html' %}
+
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="col mt-3">
+    <div class="card">
+        <div class="card-header h5">
+          Chatroom
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col">
+                    <form>
+                        <div class="form-group">
+                            <textarea class="form-control" id="chat-text" rows="10"></textarea><br>
+                            <input class="form-control" type="text" id="input" size="80"><br>
+                            <input class="btn btn-secondary btn-block" type="button" id="submit" value="Send"><br>
+                            
+                            {{ room_name|json_script:"room-name" }}
+                            {{ request.user.username|json_script:"user_username" }}
+                        </div>
+                        
+                    </form>
+                </div>           
+                 
+            </div>
+            
+        </div>
+    </div>
+</div>
+<script>
+
+</script>
+{% endblock %}

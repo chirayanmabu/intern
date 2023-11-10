@@ -111,9 +111,10 @@
       </div>
       <!-- <div class="col p-3"> -->
       {% block content %}
-
+      
       {% endblock content %}
       <!-- </div> -->
+      
     </div>
   </div>
 
@@ -125,6 +126,37 @@
     crossorigin="anonymous"></script>
   <script src="{% static 'js/scripts.js' %}"></script>
   <script>
+    const user_username = JSON.parse(document.getElementById('user_username').textContent)
+    const roomName = JSON.parse(document.getElementById('room-name').textContent)
+
+    document.querySelector('#submit').onclick = function (e) {
+        const messageInputDom = document.querySelector('#input');
+        const message = messageInputDom.value;
+        chatSocket.send(JSON.stringify({
+            'message': message,
+            'username': user_username,
+        }));
+        messageInputDom.value = '';
+    };
+
+    const chatSocket = new WebSocket(
+        'ws://' + 
+        window.location.host +
+        '/ws/chat/' + 
+        roomName +
+        '/'
+    )
+
+    chatSocket.onmessage = function (e){
+        const data = JSON.parse(e.data);
+        console.log(data)
+        document.querySelector('#chat-text').value += (data.username + ': ' + data.message + '\n')
+    }
+
+
+
+
+    // LIKE BUTTON
     $(document).on('click', '#like-button', function (e) {
     e.preventDefault();
     $.ajax({

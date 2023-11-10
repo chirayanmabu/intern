@@ -11,8 +11,13 @@ from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 from .decorators import unauthenticated_user
 from django.dispatch import receiver
 
+from rest_framework import generics, status
+from rest_framework.response import Response
+from rest_framework.request import Request
+
 from .forms import *
 from .models import *
+from .serializers import *
 
 
 def registerPage(request):
@@ -69,10 +74,6 @@ def accept_request(request, id):
     return redirect('home')
 
 
-
-# @login_required(login_url='login')
-# def homePage(request):
-#     return render(request, 'core/home.html')
 
 
 class PostListView(LoginRequiredMixin, View):
@@ -321,3 +322,14 @@ class FriendsListView(View):
 class FriendRequestView(View):
     def get(self, request, *args, **kwargs):
         return render(request, 'core/friend-req.html')
+    
+
+def ChatRoom(request, room_name):
+
+    
+    context = {
+        'room_name': room_name
+    }
+
+    return render(request, 'core/chatroom.html', context)
+
