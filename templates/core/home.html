@@ -5,28 +5,32 @@
 {% if user.friends.count == 0 %}
 <div class="col-md-6 mt-3">
   <div class="card">
-      <div class="card-header h5">
-        Add people you may know
-      </div>
-      <div class="card-body">
-          <div class="row">
-              {% for profile_page in profile_list %}
-                {% if profile_page.user.username != user.username %}
-                <div class="col-6 mb-3">
-                    <div class="card" style="width: 18rem;">
-                        <a href="{% url 'profile' profile_page.user.profile.pk %}"><img src="{{ profile_page.user.profile.profile_pic.url }}" class="card-img-top" alt="..." style="height: 230px;"></a>
-                        <div class="card-body">
-                            <a href="{% url 'profile' profile_page.user.profile.pk %}" style="text-decoration: none;"><p class="card-text h5 mb-3">{{ profile_page.user.username }}</p></a>
-                            <a href="{% url 'profile' profile_page.user.profile.pk %}" class="btn accept-btn mb-2">View Profile</a>
-                        </div>
-                    </div>
-                    </a>
-                </div>
-                {% endif %}
-              {% endfor %}                              
+    <div class="card-header h5">
+      Add people you may know
+    </div>
+    <div class="card-body">
+      <div class="row">
+        {% for profile_page in profile_list %}
+          {% if profile_page.user.username != user.username %}
+          <div class="col-6 mb-3">
+            <div class="card" style="width: 18rem;">
+              <a href="{% url 'profile' profile_page.user.profile.pk %}"><img
+                  src="{{ profile_page.user.profile.profile_pic.url }}" class="card-img-top" alt="..."
+                  style="height: 230px;"></a>
+              <div class="card-body">
+                <a href="{% url 'profile' profile_page.user.profile.pk %}" style="text-decoration: none;">
+                  <p class="card-text h5 mb-3">{{ profile_page.user.username }}</p>
+                </a>
+                <a href="{% url 'profile' profile_page.user.profile.pk %}" class="btn accept-btn mb-2">View Profile</a>
+              </div>
+            </div>
+            </a>
           </div>
-
+          {% endif %}
+        {% endfor %}
       </div>
+
+    </div>
   </div>
 </div>
 
@@ -35,7 +39,8 @@
   {% for post in post_list %}
   <div class="card sm-w-50 mb-3 ">
     <div class="card-header justify-content-center">
-      <img class="post-dp me-2" src="{{ post.author.profile.profile_pic.url }}" alt="" style="width: 50px; height: 50px;">
+      <img class="post-dp me-2" src="{{ post.author.profile.profile_pic.url }}" alt=""
+        style="width: 50px; height: 50px;">
       <a href="{% url 'profile' post.author.profile.pk %}" class="h5"><span>{{ post.author }}</span></a><span
         class="ms-2">{{ post.created_on }}</span>
     </div>
@@ -56,14 +61,14 @@
             <i class="bi bi-hand-thumbs-up-fill"></i>
             <span id="like-count" class="ps-1">{{ post.like_count }}</span>
           </button>
-          
+
           <form method="POST" action="">
             {% csrf_token %}
             <div class="input-group mb-3">
               <input type="text" class="form-control" placeholder="Comment" aria-label="Comment"
                 aria-describedby="Comment">
               <!-- <button class="btn btn-outline-secondary" type="button" id="Comment">Post</button> -->
-              
+
               <a href="{% url 'post_detail' post.pk %}" type="button" class="btn btn-outline-secondary">Post</a>
               <a href="{% url 'post_detail' post.pk %}" type="button" class="btn btn-outline-secondary">View
                 comments</a>
@@ -84,7 +89,7 @@
     Create a Post
   </button>
   <div class="modal fade" id="createPostModal" tabindex="-1" aria-labelledby="createPostModalLabel" aria-hidden="true">
-    <form action="" method="POST" enctype="multipart/form-data">
+    <form method="POST" enctype="multipart/form-data">
       {% csrf_token %}
       <div class="modal-dialog">
         <div class="modal-content">
@@ -93,7 +98,9 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            {{ form|crispy }}
+            {{ form.body }}
+            {{ form.post_pic }}
+            
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -103,7 +110,7 @@
       </div>
     </form>
   </div>
-</div>  
+</div>
 
 
 {% endblock content %}

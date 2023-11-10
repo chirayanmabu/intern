@@ -175,6 +175,8 @@ class PostListView(LoginRequiredMixin, View):
             new_post.author = request.user
             new_post.save()
             print("nice")
+        else:
+            print("haha")
 
         context = {
             'post_list': posts,

@@ -89,12 +89,11 @@ class ProfileForm(ModelForm):
 class PostForm(ModelForm):
     body = forms.CharField(
         label='',
-        widget=forms.Textarea(attrs={'rows': '3', 'placeholder': 'Caption'})
+        widget=forms.Textarea(attrs={'rows': '3', 'placeholder': 'Caption', 'class': 'form-control'})
     )
 
     post_pic = forms.ImageField(
         required=False,
-        widget=forms.TextInput(attrs={'class': 'form-control', 'type': 'file'})
     )
 
     class Meta:
