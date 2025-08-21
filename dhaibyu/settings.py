@@ -50,7 +50,6 @@ INSTALLED_APPS = [
     'core.apps.CoreConfig',
 
     'crispy_forms',
-    'bootstrap5',
     'crispy_bootstrap5',
 
     'rest_framework',
@@ -157,6 +156,8 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     BASE_DIR / "static"
 ]
+
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
